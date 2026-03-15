@@ -108,16 +108,7 @@ function AdminSidebar({
         })}
       </nav>
 
-      <div className="border-t p-4 space-y-2">
-        <Link 
-          href="/dashboard" 
-          title={isCollapsed ? "Volver al dashboard" : undefined}
-          className={cn("flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground", isCollapsed && "justify-center")}
-        >
-          <LayoutDashboard className="h-5 w-5 shrink-0" />
-          {!isCollapsed && <span>Volver al dashboard</span>}
-        </Link>
-        
+      <div className="border-t p-4">
         {onLogout && (
           <button
             onClick={onLogout}
