@@ -45,11 +45,13 @@ const adminNavItems = [
 function AdminSidebar({ 
   onNavigate, 
   isCollapsed = false, 
-  onToggleCollapse 
+  onToggleCollapse,
+  onLogout
 }: { 
   onNavigate?: () => void
   isCollapsed?: boolean
   onToggleCollapse?: () => void
+  onLogout?: () => void
 }) {
   const pathname = usePathname()
   
@@ -106,7 +108,7 @@ function AdminSidebar({
         })}
       </nav>
 
-      <div className="border-t p-4">
+      <div className="border-t p-4 space-y-2">
         <Link 
           href="/dashboard" 
           title={isCollapsed ? "Volver al dashboard" : undefined}
@@ -115,6 +117,20 @@ function AdminSidebar({
           <LayoutDashboard className="h-5 w-5 shrink-0" />
           {!isCollapsed && <span>Volver al dashboard</span>}
         </Link>
+        
+        {onLogout && (
+          <button
+            onClick={onLogout}
+            title={isCollapsed ? "Cerrar sesión" : undefined}
+            className={cn(
+              "flex w-full items-center gap-3 rounded-lg py-2 text-sm font-medium text-destructive transition-colors hover:bg-destructive/10",
+              isCollapsed ? "justify-center px-2" : "px-3"
+            )}
+          >
+            <LogOut className="h-5 w-5 shrink-0" />
+            {!isCollapsed && <span>Cerrar sesión</span>}
+          </button>
+        )}
       </div>
     </div>
   )
@@ -167,7 +183,8 @@ export default function AdminLayout({
       <aside className={cn("fixed inset-y-0 left-0 z-50 hidden border-r bg-card transition-all duration-300 lg:block", isSidebarCollapsed ? "w-20" : "w-64")}>
         <AdminSidebar 
           isCollapsed={isSidebarCollapsed} 
-          onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)} 
+          onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+          onLogout={handleLogout}
         />
       </aside>
 
