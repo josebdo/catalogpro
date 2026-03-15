@@ -129,16 +129,7 @@ export default function LoginPage() {
             </Link>
           </p>
 
-          {/* Demo Credentials */}
-          <div className="mt-8 rounded-lg border border-border bg-muted/50 p-4">
-            <p className="mb-2 text-sm font-medium text-[#0F172A]">
-              Credenciales de prueba base de datos:
-            </p>
-            <div className="space-y-1 text-xs text-muted-foreground">
-              <p><strong>Admin:</strong> josebdo91@gmail.com</p>
-              <p><strong>Clave:</strong> Jo1991ga</p>
-            </div>
-          </div>
+
         </div>
       </div>
 
