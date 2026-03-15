@@ -190,7 +190,10 @@ export default function AdminLayout({
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0">
               <SheetTitle className="sr-only">Menú de Navegación Admin</SheetTitle>
-              <AdminSidebar onNavigate={() => setSidebarOpen(false)} />
+              <AdminSidebar 
+                onNavigate={() => setSidebarOpen(false)} 
+                onLogout={handleLogout}
+              />
             </SheetContent>
           </Sheet>
         )}
