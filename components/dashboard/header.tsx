@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { Home, Package, FolderOpen, Eye, BarChart3, Users, Settings, CreditCard, LogOut, Lock, Star, Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -28,8 +29,10 @@ interface DashboardHeaderProps {
 export function DashboardHeader({ user, business }: DashboardHeaderProps) {
   const router = useRouter()
   const pathname = usePathname()
+  const [isSheetOpen, setIsSheetOpen] = useState(false)
 
   const handleLogout = async () => {
+    setIsSheetOpen(false)
     try {
       localStorage.removeItem('currentUser')
       localStorage.removeItem('currentBusiness')
@@ -74,9 +77,9 @@ export function DashboardHeader({ user, business }: DashboardHeaderProps) {
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-border bg-white px-4 lg:justify-end lg:px-8">
       {/* Mobile Menu */}
-      <Sheet>
+      <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="sm" className="lg:hidden">
+          <Button variant="ghost" size="sm" className="lg:hidden" onClick={() => setIsSheetOpen(true)}>
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
@@ -113,6 +116,7 @@ export function DashboardHeader({ user, business }: DashboardHeaderProps) {
                   <button
                     key={item.href}
                     onClick={() => {
+                      setIsSheetOpen(false)
                       if (locked) {
                         router.push('/dashboard/suscripcion')
                       } else if (item.external) {
