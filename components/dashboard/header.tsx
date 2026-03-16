@@ -1,9 +1,10 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { Menu, LogOut } from 'lucide-react'
+import { useRouter, usePathname } from 'next/navigation'
+import { Home, Package, FolderOpen, Eye, BarChart3, Users, Settings, CreditCard, LogOut, Lock, Star, Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +14,9 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
 import { CatalogProLogo } from '@/components/catalog-pro-logo'
-import type { User, Business } from '@/lib/mock-data'
+import { type User, type Business, getBusinessById } from '@/lib/mock-data'
+import { getPlanConfig } from '@/lib/plans'
+import { cn } from '@/lib/utils'
 
 interface DashboardHeaderProps {
   user: User
@@ -22,6 +25,7 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ user, business }: DashboardHeaderProps) {
   const router = useRouter()
+  const pathname = usePathname()
 
   const handleLogout = () => {
     localStorage.removeItem('currentUser')
@@ -33,11 +37,33 @@ export function DashboardHeader({ user, business }: DashboardHeaderProps) {
     if (!name) return 'U'
     return name
       .split(' ')
+      .filter(Boolean)
       .map((n) => n[0])
       .join('')
       .toUpperCase()
       .slice(0, 2)
   }
+
+  const navItems = [
+    { href: '/dashboard', label: 'Inicio', icon: Home },
+    { href: '/dashboard/productos', label: 'Productos', icon: Package },
+    { href: '/dashboard/categories', label: 'Categorías', icon: FolderOpen },
+    { href: `/${business.slug}`, label: 'Vista Previa', icon: Eye, external: true },
+    { href: '/dashboard/analiticas', label: 'Analíticas', icon: BarChart3, requiresPlan: 'basico' },
+    { href: '/dashboard/equipo', label: 'Mi Equipo', icon: Users, requiresPlan: 'pro' },
+    { href: '/dashboard/configuracion', label: 'Configuración', icon: Settings },
+    { href: '/dashboard/suscripcion', label: 'Suscripción', icon: CreditCard },
+  ]
+
+  const isLocked = (item: typeof navItems[0]) => {
+    if (!item.requiresPlan) return false
+    const planOrder = ['free', 'basico', 'pro', 'founders']
+    const currentIndex = planOrder.indexOf(business.plan)
+    const requiredIndex = planOrder.indexOf(item.requiresPlan)
+    return currentIndex < requiredIndex
+  }
+
+  const planConfig = getPlanConfig(business.plan)
 
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b border-border bg-white px-4 lg:justify-end lg:px-8">
@@ -72,7 +98,38 @@ export function DashboardHeader({ user, business }: DashboardHeaderProps) {
             </div>
           </div>
           <div className="flex-1 overflow-y-auto p-4">
-            {/* Additional mobile links could go here if needed */}
+            <nav className="space-y-1">
+              {navItems.map((item) => {
+                const locked = isLocked(item)
+                const isActive = pathname === item.href
+
+                return (
+                  <button
+                    key={item.href}
+                    onClick={() => {
+                      if (locked) {
+                        router.push('/dashboard/suscripcion')
+                      } else if (item.external) {
+                        window.open(item.href, '_blank')
+                      } else {
+                        router.push(item.href)
+                      }
+                    }}
+                    className={cn(
+                      'flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors',
+                      isActive
+                        ? 'bg-sidebar-accent text-sidebar-accent-foreground'
+                        : 'text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+                      locked && 'cursor-not-allowed opacity-50'
+                    )}
+                  >
+                    <item.icon className="h-5 w-5 shrink-0" />
+                    <span className="flex-1 text-left">{item.label}</span>
+                    {locked && <Lock className="h-3 w-3" />}
+                  </button>
+                )
+              })}
+            </nav>
           </div>
           <div className="border-t border-sidebar-border p-4">
             <Button 

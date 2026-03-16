@@ -102,6 +102,7 @@ export default function DashboardLayout({
         subscriptionExpiresAt: business.subscription_expires_at,
         logoUrl: business.logo_url,
         accentColor: business.accent_color,
+        whatsappMessageTemplate: business.whatsapp_message_template,
       } as any)
       
       setIsLoading(false)

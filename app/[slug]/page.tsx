@@ -111,7 +111,8 @@ export default async function CatalogPage({ params, searchParams }: CatalogPageP
     accentColor: business.accent_color,
     logoUrl: business.logo_url,
     coverUrl: business.cover_url,
-    whatsappNumber: business.whatsapp_number
+    whatsappNumber: business.whatsapp_number,
+    whatsappMessageTemplate: business.whatsapp_message_template
   }
 
   // Filter products by category if specified

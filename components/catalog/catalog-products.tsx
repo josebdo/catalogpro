@@ -51,7 +51,8 @@ function ProductCard({ product, business }: ProductCardProps) {
     if (!business.whatsappNumber || !product.isAvailable) return
     
     const price = formatCurrency(product.price, product.currency)
-    const message = business.whatsappMessageTemplate
+    const template = business.whatsappMessageTemplate || 'Hola! Me interesa este producto: {product_name}'
+    const message = template
       .replace('{product_name}', product.name)
       .replace('{product_price}', price)
     const encodedMessage = encodeURIComponent(message)
