@@ -167,27 +167,27 @@ export default function DashboardPage() {
 
       {/* Catalog Link Card */}
       <Card style={{ borderColor: `${accentColor}40`, backgroundColor: `${accentColor}10` }}>
-        <CardContent className="p-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div className="space-y-1">
+        <CardContent className="p-4 sm:p-6">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="space-y-1 min-w-0">
               <p className="text-sm font-medium text-muted-foreground">Tu catálogo público</p>
-              <p className="text-lg font-semibold text-foreground">{catalogUrl}</p>
+              <p className="text-base sm:text-lg font-semibold text-foreground break-all">{catalogUrl}</p>
             </div>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={copyToClipboard}>
+            <div className="flex flex-wrap gap-2">
+              <Button variant="outline" size="sm" onClick={copyToClipboard} className="flex-1 sm:flex-none h-9">
                 <Copy className="mr-2 h-4 w-4" />
                 Copiar
               </Button>
               <Button 
                 size="sm" 
-                className="text-white hover:opacity-90"
+                className="flex-1 sm:flex-none h-9 text-white hover:opacity-90"
                 style={{ backgroundColor: accentColor }}
                 onClick={shareToWhatsApp}
               >
                 <Share2 className="mr-2 h-4 w-4" />
                 Compartir
               </Button>
-              <Button variant="outline" size="sm" asChild>
+              <Button variant="outline" size="sm" asChild className="flex-1 sm:flex-none h-9">
                 <Link href={`/${catalogSlug}`} target="_blank">
                   <ExternalLink className="mr-2 h-4 w-4" />
                   Ver

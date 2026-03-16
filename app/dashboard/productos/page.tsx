@@ -281,13 +281,13 @@ export default function ProductosPage() {
             {filteredProducts.map((product) => (
               <div 
                 key={product.id}
-                className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border transition-colors ${
+                className={`flex items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border transition-colors ${
                   product.is_available !== false ? 'bg-card' : 'bg-muted/50 opacity-60'
                 }`}
               >
                 <GripVertical className="h-5 w-5 text-muted-foreground cursor-grab hidden lg:block" />
                 
-                <div className="relative h-12 w-12 sm:h-16 sm:w-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                <div className="relative h-14 w-14 sm:h-16 sm:w-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
                   {product.image_url ? (
                     <Image
                       src={product.image_url}
@@ -301,54 +301,58 @@ export default function ProductosPage() {
                     </div>
                   )}
                 </div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-medium truncate">{product.name}</h3>
-                    {product.is_featured && (
-                      <Badge variant="secondary" className="bg-amber-100 text-amber-700 text-[10px] h-4 border-none">
-                        Destacado
-                      </Badge>
-                    )}
+                
+                <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-sm sm:text-base font-medium truncate">{product.name}</h3>
+                      {product.is_featured && (
+                        <Badge variant="secondary" className="bg-amber-100 text-amber-700 text-[10px] h-4 border-none">
+                          Destacado
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="text-xs sm:text-sm text-muted-foreground truncate">
+                      {product.categories?.name || 'Sin categoría'} • ${product.price} {product.currency}
+                    </p>
                   </div>
-                  <p className="text-sm text-muted-foreground truncate">
-                    {product.categories?.name || 'Sin categoría'} • ${product.price} {product.currency}
-                  </p>
-                </div>
 
-                <div className="flex items-center gap-1 sm:gap-2">
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    onClick={() => toggleProductVisibility(product)}
-                    title={product.is_available !== false ? "Ocultar" : "Mostrar"}
-                  >
-                    {product.is_available !== false ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    onClick={() => setEditingProduct(product)}
-                    title="Editar"
-                  >
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem 
-                        className="text-destructive gap-2"
-                        onClick={() => deleteProduct(product.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                        Eliminar
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      className="h-8 w-8 sm:h-9 sm:w-9"
+                      onClick={() => toggleProductVisibility(product)}
+                      title={product.is_available !== false ? "Ocultar" : "Mostrar"}
+                    >
+                      {product.is_available !== false ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="icon"
+                      className="h-8 w-8 sm:h-9 sm:w-9"
+                      onClick={() => setEditingProduct(product)}
+                      title="Editar"
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9">
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem 
+                          className="text-destructive gap-2"
+                          onClick={() => deleteProduct(product.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                          Eliminar
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 </div>
               </div>
             ))}
