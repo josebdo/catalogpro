@@ -116,7 +116,7 @@ export function CreateProductModal({
       <DialogTrigger asChild>
         {trigger ? trigger : !isEditing ? (
           <Button 
-            className="text-white gap-2 hover:opacity-90 transition-opacity" 
+            className="w-full sm:w-auto text-white gap-2 hover:opacity-90 transition-opacity" 
             style={{ backgroundColor: accentColor }}
           >
             <Plus className="h-4 w-4" />

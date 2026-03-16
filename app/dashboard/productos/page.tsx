@@ -209,48 +209,50 @@ export default function ProductosPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-1">
           <h1 className="text-2xl font-bold text-foreground">Productos</h1>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-muted-foreground text-sm">
             Gestiona los productos de tu catálogo
           </p>
         </div>
-        <CreateProductModal 
-          categories={categories} 
-          accentColor={accentColor} 
-          currency={currency} 
-          onSuccess={handleCreated}
-        />
+        <div className="w-full sm:w-auto">
+          <CreateProductModal 
+            categories={categories} 
+            accentColor={accentColor} 
+            currency={currency} 
+            onSuccess={handleCreated}
+          />
+        </div>
       </div>
 
       {/* Filters */}
       <Card>
         <CardContent className="p-4">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Buscar productos..."
-                className="pl-9"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Buscar productos..."
+                  className="pl-9 w-full"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <SelectTrigger className="w-full sm:w-[200px]">
+                  <SelectValue placeholder="Categoría" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todas las categorías</SelectItem>
+                  {categories.map(cat => (
+                    <SelectItem key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-full md:w-[200px]">
-                <SelectValue placeholder="Categoría" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todas las categorías</SelectItem>
-                {categories.map(cat => (
-                  <SelectItem key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
         </CardContent>
       </Card>
 
@@ -279,13 +281,13 @@ export default function ProductosPage() {
             {filteredProducts.map((product) => (
               <div 
                 key={product.id}
-                className={`flex items-center gap-4 p-4 rounded-lg border transition-colors ${
+                className={`flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg border transition-colors ${
                   product.is_available !== false ? 'bg-card' : 'bg-muted/50 opacity-60'
                 }`}
               >
-                <GripVertical className="h-5 w-5 text-muted-foreground cursor-grab hidden sm:block" />
+                <GripVertical className="h-5 w-5 text-muted-foreground cursor-grab hidden lg:block" />
                 
-                <div className="relative h-16 w-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
+                <div className="relative h-12 w-12 sm:h-16 sm:w-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
                   {product.image_url ? (
                     <Image
                       src={product.image_url}
