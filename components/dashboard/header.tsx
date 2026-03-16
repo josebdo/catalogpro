@@ -17,6 +17,8 @@ import { CatalogProLogo } from '@/components/catalog-pro-logo'
 import { type User, type Business, getBusinessById } from '@/lib/mock-data'
 import { getPlanConfig } from '@/lib/plans'
 import { cn } from '@/lib/utils'
+import { signOut } from '@/app/actions/auth'
+import { toast } from 'sonner'
 
 interface DashboardHeaderProps {
   user: User
@@ -27,10 +29,14 @@ export function DashboardHeader({ user, business }: DashboardHeaderProps) {
   const router = useRouter()
   const pathname = usePathname()
 
-  const handleLogout = () => {
-    localStorage.removeItem('currentUser')
-    localStorage.removeItem('currentBusiness')
-    router.push('/login')
+  const handleLogout = async () => {
+    try {
+      localStorage.removeItem('currentUser')
+      localStorage.removeItem('currentBusiness')
+      await signOut()
+    } catch (error) {
+      toast.error('Error al cerrar sesión')
+    }
   }
 
   const getInitials = (name?: string | null) => {
@@ -74,7 +80,7 @@ export function DashboardHeader({ user, business }: DashboardHeaderProps) {
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="w-72 bg-sidebar p-0">
+        <SheetContent side="left" className="flex w-72 flex-col bg-sidebar p-0">
           <SheetTitle className="sr-only">Menú de Navegación</SheetTitle>
           <div className="flex h-16 items-center border-b border-sidebar-border px-4">
             <CatalogProLogo variant="white" />
